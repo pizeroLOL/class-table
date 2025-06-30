@@ -30,11 +30,10 @@ where
     gtk_window.init_layer_shell();
     gtk_window.set_layer(Layer::Top);
     gtk_window.set_height_request(24);
-
     gtk_window.set_width_request(1920);
     gtk_window.set_anchor(Edge::Top, true);
     gtk_window.set_layer_shell_margin(Edge::Top, 8);
-    gtk_window.set_exclusive_zone(24);
+    gtk_window.set_exclusive_zone(32);
     gtk_window.show_all();
     Ok(())
 }
@@ -59,6 +58,7 @@ where
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
+        .plugin(tauri_plugin_fs::init())
         .setup(setup)
         .plugin(tauri_plugin_opener::init())
         .invoke_handler(tauri::generate_handler![])

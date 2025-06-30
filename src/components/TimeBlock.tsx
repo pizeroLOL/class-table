@@ -1,4 +1,5 @@
 import { createSignal, onCleanup } from "solid-js";
+import PillCard from "./PillCard";
 
 function createTime() {
   const t = new Date();
@@ -21,9 +22,9 @@ export default () => {
     clearInterval(timer);
   });
   return (
-    <>
+    <PillCard>
       <div>{time().date}</div>
       <div class="font-bold">{time().time}</div>
-    </>
+    </PillCard>
   );
-}
+};
