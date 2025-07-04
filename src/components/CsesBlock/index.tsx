@@ -71,9 +71,8 @@ export function intoClassBlockList(config: z.infer<typeof Cses>): ClassBlock[] {
           start_time: day * 86400 + matchCsesTime(it.start_time),
           end_time: day * 86400 + matchCsesTime(it.end_time),
           simplified_name:
-            (subjectInfo[it.subject].simplified_name ?? it.subject.length >= 1)
-              ? it.subject[0]
-              : "课",
+            subjectInfo[it.subject].simplified_name ??
+            (it.subject.length >= 1 ? it.subject[0] : "课"),
         }))
         .sort((a, b) => a.start_time - b.start_time) ?? [],
   );
@@ -98,7 +97,6 @@ export function getStatus(
           .concat(rawLeftStatus);
   const rawRightStatus = blocks
     .filter((block) => offset_time <= block.start_time)
-    // .map(inspect)
     .slice(0, right)
     .map((it) => it.simplified_name);
   const rightStatus =
@@ -128,13 +126,12 @@ export function getStatus(
       : ([
           {
             end_time:
-              nextClassStart !== undefined
-                ? nextClassStart
-                : blocks.length == 0
-                  ? Infinity
-                  : 14 * 24 * 60 * 60 +
-                    blocks[0].start_time -
-                    blocks[blocks.length].end_time,
+              nextClassStart ??
+              (blocks.length == 0
+                ? Infinity
+                : 14 * 24 * 60 * 60 +
+                  blocks[0].start_time -
+                  blocks[blocks.length].end_time),
             name: "下课",
             secs:
               nextClassStart !== undefined
