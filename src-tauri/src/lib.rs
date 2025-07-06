@@ -2,7 +2,13 @@ use std::error::Error;
 
 use gtk::traits::{ContainerExt, GtkWindowExt, WidgetExt};
 use gtk_layer_shell::{Edge, Layer, LayerShell};
-use tauri::{App, Manager, Runtime, Theme};
+use tauri::{
+    App,
+    Error::WebviewLabelAlreadyExists,
+    Manager, Runtime, WebviewWindowBuilder,
+    menu::{Menu, MenuItem},
+    tray::TrayIconBuilder,
+};
 
 fn set_layer_shell<R>(app: &mut App<R>) -> Result<(), Box<dyn Error>>
 where
@@ -42,7 +48,6 @@ fn setup<R>(app: &mut App<R>) -> Result<(), Box<dyn Error>>
 where
     R: Runtime,
 {
-    app.set_theme(Some(Theme::Dark));
     if cfg!(any(
         target_os = "netbsd",
         target_os = "openbsd",
@@ -52,6 +57,46 @@ where
     )) {
         set_layer_shell(app)?;
     }
+    let menu = Menu::with_items(
+        app,
+        &[
+            &MenuItem::with_id(app, "quit", "退出", true, None::<&str>)?,
+            &MenuItem::with_id(app, "settings", "打开设置", true, None::<&str>)?,
+        ],
+    )?;
+    TrayIconBuilder::new()
+        .icon(app.default_window_icon().ok_or("No app icon")?.clone())
+        .menu(&menu)
+        .on_menu_event(|app, event| match event.id.as_ref() {
+            "quit" => {
+                app.exit(0);
+            }
+            "settings" => {
+                let settings = app
+                    .config()
+                    .app
+                    .windows
+                    .iter()
+                    .find(|x| x.label == "settings")
+                    .unwrap();
+                let window = WebviewWindowBuilder::from_config(app, &settings)
+                    .unwrap()
+                    .build();
+                match window {
+                    Ok(_) => Ok(()),
+                    Err(WebviewLabelAlreadyExists(label)) => {
+                        eprintln!("已经打开了 {label}");
+                        Ok(())
+                    }
+                    Err(e) => Err(e),
+                }
+                .unwrap();
+            }
+            _ => {
+                eprintln!("unknow event {}", event.id.as_ref())
+            }
+        })
+        .build(app)?;
     Ok(())
 }
 

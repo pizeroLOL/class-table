@@ -12,13 +12,23 @@
   "app": {
     "windows": [
       {
-        "title": "class-table",
+        "title": "class-table/bar",
         "width": 800,
         "height": 600,
         "alwaysOnTop": true,
         "transparent": true,
-        "resizable": true,
-        "focus": false
+        "resizable": false,
+        "focus": false,
+        "url": "/bar",
+        "label": "main"
+      },
+      {
+        "title": "class-table/settings",
+        "width": 800,
+        "height": 600,
+        "url": "/settings",
+        "label": "settings",
+        "create": false
       }
     ],
     "security": {

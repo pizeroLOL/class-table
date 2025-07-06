@@ -1,5 +1,6 @@
-import CsesBlock from "./components/CsesBlock";
-import Time from "./components/TimeBlock";
+import CsesBlock from "../components/CsesBlock";
+import Time from "../components/TimeBlock";
+import "../styles/Bar.css";
 
 function App() {
   const Components = () => [<Time />, <CsesBlock />];
