@@ -150,14 +150,14 @@ export function getStatus(
 
 const blurTime = (sec: number) =>
   sec < 30
-    ? `<${30}s`
+    ? `< 30s`
     : sec < 60
-      ? `<${60}s`
+      ? `< 30s`
       : sec < 60 * 60
-        ? `<${Math.floor(sec / 60) + 1}m`
+        ? `< ${Math.floor(sec / 60) + 1}m`
         : sec < 24 * 60 * 60
-          ? `<${Math.floor(sec / 60 / 60) + 1}h`
-          : `<${Math.floor(sec / 24 / 60 / 60) + 1}d`;
+          ? `< ${Math.floor(sec / 60 / 60) + 1}h`
+          : `< ${Math.floor(sec / 24 / 60 / 60) + 1}d`;
 
 const dayMs = 24 * 60 * 60 * 1000;
 const mondayMap = [6, 0, 1, 2, 3, 4, 5];
@@ -191,8 +191,7 @@ function InnerCses(props: { config?: z.infer<typeof Cses> }) {
       </PillCard>
       <PillCard>
         {time().current.map((it) => (
-          <div class="flex gap-1 relative">
-            <div style={{}}></div>
+          <div class="flex gap-1">
             <div class="font-bold">{it.name}</div>
             {it.room && <div>{it.room}</div>}
             {it.teacher && <div>{it.teacher}</div>}

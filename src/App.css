@@ -3,9 +3,3 @@
 :root {
     background: transparent;
 }
-
-@layer components {
-    .pill {
-        @apply flex gap-2 px-2 rounded-full items-center justify-center;
-    }
-}
