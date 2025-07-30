@@ -1,43 +1,268 @@
 {
-  "$schema": "./schema.json",
-  "inputs": {
-    "schedules": {
-      "workwork": {
-        "like": "cses",
-        "file": "cses.json",
-        "start": "2025-07-30"
-      }
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "inputs": {
+      "type": "object",
+      "properties": {
+        "schedules": {
+          "type": "object",
+          "propertyNames": { "type": "string" },
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "like": { "type": "string", "const": "cses" },
+                  "file": { "type": "string" },
+                  "start": {
+                    "type": "string",
+                    "format": "date",
+                    "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))$"
+                  }
+                },
+                "required": ["like", "file", "start"],
+                "additionalProperties": false
+              }
+            ]
+          }
+        }
+      },
+      "required": ["schedules"],
+      "additionalProperties": false
+    },
+    "positionPx": {
+      "type": "object",
+      "properties": {
+        "width": { "type": "number" },
+        "marginTop": { "type": "number" },
+        "marginBottom": { "type": "number" },
+        "exclusiveZone": { "type": "number" }
+      },
+      "required": ["width", "marginTop", "marginBottom", "exclusiveZone"],
+      "additionalProperties": false
+    },
+    "layout": {
+      "type": "object",
+      "properties": {
+        "left": {
+          "type": "array",
+          "items": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "name": { "type": "string", "const": "time" },
+                  "style": {
+                    "type": "string",
+                    "enum": [
+                      "datetime",
+                      "dateShortTime",
+                      "date",
+                      "time",
+                      "shortTime"
+                    ]
+                  }
+                },
+                "required": ["name", "style"],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "name": { "type": "string", "const": "completedCourses" },
+                  "bySchedule": { "type": "string" },
+                  "length": { "type": "number", "minimum": 1 },
+                  "mode": { "type": "string", "enum": ["long", "short"] },
+                  "crossDay": { "type": "boolean" }
+                },
+                "required": [
+                  "name",
+                  "bySchedule",
+                  "length",
+                  "mode",
+                  "crossDay"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "name": { "type": "string", "const": "ongoingCourses" },
+                  "bySchedule": { "type": "string" },
+                  "blur": { "type": "boolean" }
+                },
+                "required": ["name", "bySchedule", "blur"],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "name": { "type": "string", "const": "upcomingCourses" },
+                  "bySchedule": { "type": "string" },
+                  "length": { "type": "number", "minimum": 1 },
+                  "mode": { "type": "string", "enum": ["long", "short"] },
+                  "crossDay": { "type": "boolean" }
+                },
+                "required": [
+                  "name",
+                  "bySchedule",
+                  "length",
+                  "mode",
+                  "crossDay"
+                ],
+                "additionalProperties": false
+              }
+            ]
+          }
+        },
+        "middle": {
+          "type": "array",
+          "items": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "name": { "type": "string", "const": "time" },
+                  "style": {
+                    "type": "string",
+                    "enum": [
+                      "datetime",
+                      "dateShortTime",
+                      "date",
+                      "time",
+                      "shortTime"
+                    ]
+                  }
+                },
+                "required": ["name", "style"],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "name": { "type": "string", "const": "completedCourses" },
+                  "bySchedule": { "type": "string" },
+                  "length": { "type": "number", "minimum": 1 },
+                  "mode": { "type": "string", "enum": ["long", "short"] },
+                  "crossDay": { "type": "boolean" }
+                },
+                "required": [
+                  "name",
+                  "bySchedule",
+                  "length",
+                  "mode",
+                  "crossDay"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "name": { "type": "string", "const": "ongoingCourses" },
+                  "bySchedule": { "type": "string" },
+                  "blur": { "type": "boolean" }
+                },
+                "required": ["name", "bySchedule", "blur"],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "name": { "type": "string", "const": "upcomingCourses" },
+                  "bySchedule": { "type": "string" },
+                  "length": { "type": "number", "minimum": 1 },
+                  "mode": { "type": "string", "enum": ["long", "short"] },
+                  "crossDay": { "type": "boolean" }
+                },
+                "required": [
+                  "name",
+                  "bySchedule",
+                  "length",
+                  "mode",
+                  "crossDay"
+                ],
+                "additionalProperties": false
+              }
+            ]
+          }
+        },
+        "right": {
+          "type": "array",
+          "items": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "name": { "type": "string", "const": "time" },
+                  "style": {
+                    "type": "string",
+                    "enum": [
+                      "datetime",
+                      "dateShortTime",
+                      "date",
+                      "time",
+                      "shortTime"
+                    ]
+                  }
+                },
+                "required": ["name", "style"],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "name": { "type": "string", "const": "completedCourses" },
+                  "bySchedule": { "type": "string" },
+                  "length": { "type": "number", "minimum": 1 },
+                  "mode": { "type": "string", "enum": ["long", "short"] },
+                  "crossDay": { "type": "boolean" }
+                },
+                "required": [
+                  "name",
+                  "bySchedule",
+                  "length",
+                  "mode",
+                  "crossDay"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "name": { "type": "string", "const": "ongoingCourses" },
+                  "bySchedule": { "type": "string" },
+                  "blur": { "type": "boolean" }
+                },
+                "required": ["name", "bySchedule", "blur"],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "name": { "type": "string", "const": "upcomingCourses" },
+                  "bySchedule": { "type": "string" },
+                  "length": { "type": "number", "minimum": 1 },
+                  "mode": { "type": "string", "enum": ["long", "short"] },
+                  "crossDay": { "type": "boolean" }
+                },
+                "required": [
+                  "name",
+                  "bySchedule",
+                  "length",
+                  "mode",
+                  "crossDay"
+                ],
+                "additionalProperties": false
+              }
+            ]
+          }
+        }
+      },
+      "required": ["left", "middle", "right"],
+      "additionalProperties": false
     }
   },
-  "positionPx": {
-    "width": 0,
-    "marginTop": 0,
-    "marginBottom": 0,
-    "exclusiveZone": 0
-  },
-  "layout": {
-    "left": [],
-    "middle": [{ "name": "time", "style": "datetime" }],
-    "right": [
-      {
-        "name": "completedCourses",
-        "bySchedule": "workwork",
-        "crossDay": false,
-        "length": 4,
-        "mode": "short"
-      },
-      {
-        "name": "ongoingCourses",
-        "blur": false,
-        "bySchedule": "workwork"
-      },
-      {
-        "name": "upcomingCourses",
-        "bySchedule": "workwork",
-        "crossDay": false,
-        "length": 4,
-        "mode": "long"
-      }
-    ]
-  }
+  "required": ["inputs", "positionPx", "layout"],
+  "additionalProperties": false
 }
