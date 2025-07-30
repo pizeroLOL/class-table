@@ -189,7 +189,7 @@ function App() {
     }
   });
   return (
-    <main class="font-normal font-sans gap-2 h-dvh grid grid-flow-col items-center">
+    <main class="font-normal font-sans gap-2 h-dvh grid grid-cols-3 justify-stretch items-center">
       <Switch>
         <Match when={settings.loading}>
           <PillCard>Loading...</PillCard>

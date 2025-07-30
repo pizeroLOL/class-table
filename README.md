@@ -17,4 +17,4 @@ pnpm tauri dev
 
 ## 食用方法
 
-将您的 `cses.json` 文件放置到 `$XDG_CONFIG_HOME/class-table/cses.json`
+根据 [schema](docs/settings.schema.json) 在 `$XDG_CONFIG_HOME/top.pizero.class-table/settings.json` 编写设置

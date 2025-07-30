@@ -1,0 +1,43 @@
+{
+  "$schema": "./schema.json",
+  "inputs": {
+    "schedules": {
+      "workwork": {
+        "like": "cses",
+        "file": "cses.json",
+        "start": "2025-07-30"
+      }
+    }
+  },
+  "positionPx": {
+    "width": 0,
+    "marginTop": 0,
+    "marginBottom": 0,
+    "exclusiveZone": 0
+  },
+  "layout": {
+    "left": [],
+    "middle": [{ "name": "time", "style": "datetime" }],
+    "right": [
+      {
+        "name": "completedCourses",
+        "bySchedule": "workwork",
+        "crossDay": false,
+        "length": 4,
+        "mode": "short"
+      },
+      {
+        "name": "ongoingCourses",
+        "blur": false,
+        "bySchedule": "workwork"
+      },
+      {
+        "name": "upcomingCourses",
+        "bySchedule": "workwork",
+        "crossDay": false,
+        "length": 4,
+        "mode": "long"
+      }
+    ]
+  }
+}
