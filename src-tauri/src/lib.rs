@@ -36,10 +36,18 @@ where
     gtk_window.init_layer_shell();
     gtk_window.set_layer(Layer::Top);
     gtk_window.set_height_request(24);
-    gtk_window.set_width_request(1920);
+    // TODO: handle error
+    let monitor: i32 = app.available_monitors().unwrap()[0]
+        .work_area()
+        .size
+        .width
+        .try_into()
+        .unwrap_or(1920);
+    println!("{}", monitor);
+    gtk_window.set_width_request(monitor - 16i32);
     gtk_window.set_anchor(Edge::Top, true);
     gtk_window.set_layer_shell_margin(Edge::Top, 8);
-    gtk_window.set_exclusive_zone(32);
+    gtk_window.set_exclusive_zone(24);
     gtk_window.show_all();
     Ok(())
 }
@@ -48,6 +56,7 @@ fn setup<R>(app: &mut App<R>) -> Result<(), Box<dyn Error>>
 where
     R: Runtime,
 {
+    // TODO: dev mode
     if cfg!(any(
         target_os = "netbsd",
         target_os = "openbsd",

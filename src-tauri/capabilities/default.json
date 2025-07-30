@@ -9,7 +9,7 @@
     "fs:default",
     {
       "identifier": "fs:scope",
-      "allow": [{ "path": "$CONFIG/class-table/*" }]
+      "allow": [{ "path": "$APPCONFIG/*" }]
     }
   ]
 }
