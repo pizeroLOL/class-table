@@ -33,7 +33,8 @@ export default (props: {
   );
   const leftStatus = createMemo(() =>
     rawLeftStatus().length == props.option.length ||
-    props.schedule.length < props.option.length
+    props.schedule.length < props.option.length ||
+    !props.option.crossDay
       ? rawLeftStatus()
       : props.schedule
           .slice(rawLeftStatus().length - props.option.length)

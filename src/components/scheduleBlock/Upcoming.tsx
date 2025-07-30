@@ -1,9 +1,10 @@
-import { createSignal, onCleanup } from "solid-js";
+import { createMemo, from } from "solid-js";
 import z from "zod";
-import { UpcomingCourses } from "../../utils/settings";
-import PillCard from "../PillCard";
 import { dayMs, mondayMap } from ".";
+import { inspect } from "../../utils/func";
+import { UpcomingCourses } from "../../utils/settings";
 import { day } from "../../utils/time";
+import PillCard from "../PillCard";
 
 export default (props: {
   schedule: ClassBlock[];
@@ -13,35 +14,41 @@ export default (props: {
   const start =
     props.rawStart.setHours(0, 0, 0, 0) -
     mondayMap[props.rawStart.getDay()] * dayMs;
-  const [offsetTime, setOffsetTime] = createSignal(
-    Math.floor(((Date.now() - start) % (14 * dayMs)) / 1000),
+  const offsetTime = from((set) => {
+    const interval = setInterval(() => {
+      set(Math.floor(((Date.now() - start) % (14 * dayMs)) / 1000));
+    }, 1000);
+    return () => clearInterval(interval);
+  }, 0);
+  const rawRightStatus = createMemo(() =>
+    props.schedule
+      .filter(
+        (block) =>
+          offsetTime() <= block.start_time &&
+          (props.option.crossDay
+            ? true
+            : block.start_time < Math.ceil(offsetTime() / day) * day),
+      )
+      .map(inspect("d"))
+      .slice(0, props.option.length)
+      .map((it) => it.simplified_name),
   );
-  const countDown = setInterval(() =>
-    setOffsetTime(Math.floor(((Date.now() - start) % (14 * dayMs)) / 1000)),
-  );
-  onCleanup(() => clearInterval(countDown));
-  const rawRightStatus = props.schedule
-    .filter(
-      (block) =>
-        offsetTime() <= block.start_time &&
-        (props.option.crossDay
-          ? true
-          : block.start_time < Math.ceil(offsetTime() / day) * day),
-    )
-    .slice(0, props.option.length)
-    .map((it) => it.simplified_name);
-  const rightStatus =
-    rawRightStatus.length == props.option.length ||
-    props.schedule.length < props.option.length
-      ? rawRightStatus
-      : rawRightStatus.concat(
+  const rightStatus = createMemo(() =>
+    rawRightStatus().length == props.option.length ||
+    props.schedule.length < props.option.length ||
+    !props.option.crossDay
+      ? rawRightStatus()
+      : rawRightStatus().concat(
           props.schedule
-            .slice(0, props.option.length - rawRightStatus.length)
-            .map((it) => it.subject),
-        );
+            .slice(0, props.option.length - rawRightStatus().length)
+            .map((it) =>
+              props.option.mode == "long" ? it.subject : it.simplified_name,
+            ),
+        ),
+  );
   return (
     <PillCard>
-      {rightStatus.map((it) => (
+      {rightStatus().map((it) => (
         <div>{it}</div>
       ))}
     </PillCard>
