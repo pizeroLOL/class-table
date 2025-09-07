@@ -25,11 +25,19 @@ export const UpcomingCourses = z.object({
   crossDay: z.boolean(),
 });
 
+export const XiaomiWeather = z.object({
+  name: z.literal("xiaomiWeather"),
+  districtId: z.number(),
+  gapMs: z.number().optional(),
+  districtName: z.string(),
+});
+
 export const PluginUnion = z.union([
   Time,
   CompletedCourses,
   OngoingCourses,
   UpcomingCourses,
+  XiaomiWeather,
 ]);
 export const PluginArray = z.array(PluginUnion);
 

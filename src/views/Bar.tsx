@@ -22,7 +22,9 @@ import Settings, {
   ScheduleUnion,
   Time,
   UpcomingCourses,
+  XiaomiWeather,
 } from "../utils/settings";
+import Xiaomi from "../components/weatherBlock/Xiaomi.tsx";
 
 function scheduleLayoutToResouce(
   settings: z.infer<typeof Settings>,
@@ -135,6 +137,10 @@ function matcher(
         </Match>
       </Switch>
     ),
+    xiaomiWeather: (
+      option: z.infer<typeof XiaomiWeather>,
+      _settings: z.infer<typeof Settings>,
+    ) => Xiaomi(option),
   } as Record<
     z.infer<typeof PluginUnion>["name"],
     (

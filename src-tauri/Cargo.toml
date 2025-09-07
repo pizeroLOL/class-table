@@ -26,3 +26,4 @@ gtk-layer-shell = { version = "0.8.2", features = ["v0_5", "v0_6"] }
 gtk = "0.18.2"
 serde_yaml = "0.9.34"
 tauri-plugin-fs = "2"
+tauri-plugin-http = "2"
