@@ -43,11 +43,14 @@ export default (props: {
           )
           .concat(rawLeftStatus()),
   );
+  const status = leftStatus();
   return (
     <PillCard>
-      {leftStatus().map((it) => (
-        <div>{it}</div>
-      ))}
+      {status.length == 0 ? (
+        <div>暂无课程</div>
+      ) : (
+        status.map((it) => <div>{it}</div>)
+      )}
     </PillCard>
   );
 };

@@ -46,11 +46,14 @@ export default (props: {
             ),
         ),
   );
+  const status = rightStatus();
   return (
     <PillCard>
-      {rightStatus().map((it) => (
-        <div>{it}</div>
-      ))}
+      {status.length == 0 ? (
+        <div>暂无课程</div>
+      ) : (
+        status.map((it) => <div>{it}</div>)
+      )}
     </PillCard>
   );
 };
